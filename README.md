@@ -92,3 +92,6 @@ python src/inspect_database.py
 
 Entregar uma aplicação reproduzível e acessível pela web que demonstre, de ponta a ponta, como dados astronômicos podem ser preparados e utilizados em um sistema de classificação com machine learning.
 
+## Uso de inteligência artificial
+
+Este é um projeto pessoal construído com o auxílio de ferramentas de inteligência artificial, utilizadas como apoio no planejamento, na pesquisa, na documentação, na revisão e no desenvolvimento de código. Esse suporte é combinado com minhas próprias decisões técnicas, análises e avaliações. A definição dos objetivos, a validação das soluções e a responsabilidade pelos resultados permanecem sob minha autoria.
