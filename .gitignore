@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDEs e sistema operacional
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*:Zone.Identifier
+
+# Segredos e configuração local
+.env
+.env.*
+!.env.example
+
+# Logs e temporários
+*.log
+*.tmp
+
