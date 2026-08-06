@@ -49,6 +49,12 @@ Para inspecionar o banco e executar as consultas exploratórias:
 python src/inspect_database.py
 ```
 
+Para gerar/atualizar o dicionário de dados (`data/DICTIONARY.md`):
+
+```bash
+python src/generate_data_dictionary.py
+```
+
 ## Tasks
 
 ### Fundação e dados
@@ -58,7 +64,7 @@ python src/inspect_database.py
 - [x] Criar o script de ingestão do CSV
 - [x] Carregar os dados na tabela `koi_raw` do SQLite
 - [x] Conferir esquema, amostras e distribuição inicial das classes
-- [ ] Documentar a origem, a licença e o dicionário dos dados
+- [x] Documentar a origem, a licença e o dicionário dos dados
 - [ ] Criar validações automáticas de qualidade dos dados
 
 ### Análise e preparação
