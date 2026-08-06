@@ -21,6 +21,9 @@ Thumbs.db
 .env.*
 !.env.example
 
+# Banco de dados local (gerado por src/load_to_database.py)
+database/*.db
+
 # Logs e temporários
 *.log
 *.tmp
