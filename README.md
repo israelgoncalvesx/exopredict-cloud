@@ -55,6 +55,12 @@ Para gerar/atualizar o dicionário de dados (`data/DICTIONARY.md`):
 python src/generate_data_dictionary.py
 ```
 
+Para validar a qualidade dos dados brutos:
+
+```bash
+python src/validate_data_quality.py
+```
+
 ## Tasks
 
 ### Fundação e dados
@@ -65,7 +71,7 @@ python src/generate_data_dictionary.py
 - [x] Carregar os dados na tabela `koi_raw` do SQLite
 - [x] Conferir esquema, amostras e distribuição inicial das classes
 - [x] Documentar a origem, a licença e o dicionário dos dados
-- [ ] Criar validações automáticas de qualidade dos dados
+- [x] Criar validações automáticas de qualidade dos dados
 
 ### Análise e preparação
 
