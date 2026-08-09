@@ -65,6 +65,25 @@ Percentual de outliers pelo critério IQR (1,5×IQR):
 
 **Achado relevante:** os valores mais extremos de `koi_prad` (até ~200.000 raios terrestres — maior que muitas estrelas) são quase todos `FALSE POSITIVE` com `koi_score` nulo (não vetted), com 2 exceções em `CANDIDATE` também com score nulo. Isso não é um outlier estatístico "válido só que raro": é fisicamente impossível para um planeta real, provável sintoma de ajuste de trânsito malsucedido (ex.: binária eclipsante, trânsito rasante). **Implicação para a limpeza:** `koi_score` nulo já é, por si, um sinalizador de qualidade da medida; `koi_prad` acima de escala estelar (~100 R⊕) merece tratamento específico, não só winsorização estatística cega.
 
+## 6. Distribuições das variáveis físicas principais
+
+Histogramas de `koi_period`, `koi_prad` e `koi_depth` em `log10` (dada a cauda longa observada no bloco 5), e `koi_steff` (temperatura estelar) em escala natural.
+
+![Distribuições em log](images/eda_04.png)
+
+| coluna | count | mean | std | min | 25% | 50% | 75% | max |
+|---|---|---|---|---|---|---|---|---|
+| koi_period | 9.564 | 75,67 | 1334,74 | 0,24 | 2,73 | 9,75 | 40,72 | 129.995,78 |
+| koi_prad | 9.201 | 102,89 | 3077,64 | 0,08 | 1,40 | 2,39 | 14,93 | 200.346,00 |
+| koi_depth | 9.201 | 23.791,34 | 82.242,68 | 0 | 159,90 | 421,10 | 1.473,40 | 1.541.400,00 |
+| koi_steff | 9.201 | 5706,82 | 796,86 | 2.661 | 5.310 | 5.767 | 6.112 | 15.896 |
+
+**Conclusões:**
+- `koi_prad` em log é **bimodal** (pico perto de 1 R⊕ e outro perto de 30–100 R⊕) — coerente com a população real de exoplanetas (rochosos pequenos vs. gigantes gasosos), possivelmente amplificado pelos falsos positivos de raio inflado já identificados no bloco 5.
+- `koi_depth` em log fica próxima de uma normal — boa candidata a transformação log como feature para modelagem.
+- `koi_steff` já é bem comportada sem transformação — esperado, já que o Kepler mirou predominantemente estrelas tipo Sol (pico ~5700K).
+- **`koi_depth == 0` em 1 única linha** (`K00126.02`, `CANDIDATE`, `koi_score` 0,997) — caso isolado, provavelmente `0` usado como placeholder em vez de `NaN` na exportação original. Não é padrão sistemático, mas precisa ser convertido para `NaN` antes de aplicar log na etapa de transformação.
+
 ---
 
-*(em andamento — próximos blocos: distribuições das variáveis físicas, variável × classe, correlação)*
+*(em andamento — próximos blocos: variável × classe, correlação)*
