@@ -13,7 +13,7 @@ A base inicial do projeto usa o catálogo Kepler Objects of Interest (KOI). O CS
 - classes encontradas: `CONFIRMED`, `CANDIDATE` e `FALSE POSITIVE`;
 - consultas iniciais para conferir estrutura, amostras, distribuição das classes e média do `koi_score`.
 
-A análise exploratória completa está em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados, conclusões e o resumo executivo estão documentados em [`reports/eda.md`](reports/eda.md). A classificação das 141 colunas e a lista de features sem vazamento de alvo estão em [`reports/feature_selection.md`](reports/feature_selection.md). As decisões de limpeza e transformação (e por que imputação é adiada para depois do split) estão em [`reports/cleaning.md`](reports/cleaning.md). O split treino/validação/teste está documentado em [`reports/split.md`](reports/split.md). O modelo baseline (regressão logística, F1-macro 0,881 na validação) está documentado em [`reports/baseline_model.md`](reports/baseline_model.md). A comparação de modelos candidatos (Gradient Boosting venceu, F1-macro 0,925) está em [`reports/model_comparison.md`](reports/model_comparison.md). A comparação de estratégias de desbalanceamento (confirma `class_weight="balanced"` como suficiente) está em [`reports/imbalance.md`](reports/imbalance.md). A avaliação por classe e matriz de confusão (os erros mais graves são quase inexistentes) está em [`reports/evaluation.md`](reports/evaluation.md). O modelo final (F1-macro 0,915 no teste) está versionado em `models/` e documentado em [`reports/final_model.md`](reports/final_model.md). A análise de explicabilidade (importância global e SHAP por classe) está em [`reports/explainability.md`](reports/explainability.md). A API de previsão (FastAPI, schema gerado dinamicamente a partir do modelo) está documentada em [`reports/api.md`](reports/api.md).
+A análise exploratória completa está em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados, conclusões e o resumo executivo estão documentados em [`reports/eda.md`](reports/eda.md). A classificação das 141 colunas e a lista de features sem vazamento de alvo estão em [`reports/feature_selection.md`](reports/feature_selection.md). As decisões de limpeza e transformação (e por que imputação é adiada para depois do split) estão em [`reports/cleaning.md`](reports/cleaning.md). O split treino/validação/teste está documentado em [`reports/split.md`](reports/split.md). O modelo baseline (regressão logística, F1-macro 0,881 na validação) está documentado em [`reports/baseline_model.md`](reports/baseline_model.md). A comparação de modelos candidatos (Gradient Boosting venceu, F1-macro 0,925) está em [`reports/model_comparison.md`](reports/model_comparison.md). A comparação de estratégias de desbalanceamento (confirma `class_weight="balanced"` como suficiente) está em [`reports/imbalance.md`](reports/imbalance.md). A avaliação por classe e matriz de confusão (os erros mais graves são quase inexistentes) está em [`reports/evaluation.md`](reports/evaluation.md). O modelo final (F1-macro 0,915 no teste) está versionado em `models/` e documentado em [`reports/final_model.md`](reports/final_model.md). A análise de explicabilidade (importância global e SHAP por classe) está em [`reports/explainability.md`](reports/explainability.md). A API de previsão (FastAPI, schema gerado dinamicamente a partir do modelo) está documentada em [`reports/api.md`](reports/api.md). A interface Streamlit (com o bug de validação que apareceu ao testar de verdade, e a correção) está documentada em [`reports/interface.md`](reports/interface.md).
 
 ## Estrutura planejada
 
@@ -125,6 +125,12 @@ uvicorn app.main:app --reload
 
 Depois, acesse `http://127.0.0.1:8000/docs` para a documentação interativa.
 
+Para rodar a interface (com a API acima já no ar):
+
+```bash
+streamlit run app/interface.py
+```
+
 ## Tasks
 
 ### Fundação e dados
@@ -157,7 +163,7 @@ Depois, acesse `http://127.0.0.1:8000/docs` para a documentação interativa.
 ### Produto e nuvem
 
 - [x] Criar uma API de previsão
-- [ ] Criar uma interface para consulta e visualização
+- [x] Criar uma interface para consulta e visualização
 - [ ] Adicionar testes automatizados
 - [ ] Configurar lint, formatação e integração contínua
 - [ ] Criar imagens Docker
