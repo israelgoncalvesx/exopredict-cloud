@@ -1,0 +1,7 @@
+# Usado pelo Streamlit Community Cloud: ele procura requirements.txt na
+# mesma pasta do arquivo principal (app/interface.py) antes da raiz do repo.
+# Mesmo conteúdo de requirements-interface.txt — mantido também na raiz
+# para uso local/Docker (Dockerfile.interface). Ver reports/deploy.md.
+streamlit==1.61.1
+requests==2.34.2
+pandas==3.0.5
