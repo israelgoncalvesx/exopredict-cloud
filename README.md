@@ -13,7 +13,7 @@ A base inicial do projeto usa o catálogo Kepler Objects of Interest (KOI). O CS
 - classes encontradas: `CONFIRMED`, `CANDIDATE` e `FALSE POSITIVE`;
 - consultas iniciais para conferir estrutura, amostras, distribuição das classes e média do `koi_score`.
 
-A análise exploratória completa está em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados, conclusões e o resumo executivo estão documentados em [`reports/eda.md`](reports/eda.md). A classificação das 141 colunas e a lista de features sem vazamento de alvo estão em [`reports/feature_selection.md`](reports/feature_selection.md). As decisões de limpeza e transformação (e por que imputação é adiada para depois do split) estão em [`reports/cleaning.md`](reports/cleaning.md).
+A análise exploratória completa está em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados, conclusões e o resumo executivo estão documentados em [`reports/eda.md`](reports/eda.md). A classificação das 141 colunas e a lista de features sem vazamento de alvo estão em [`reports/feature_selection.md`](reports/feature_selection.md). As decisões de limpeza e transformação (e por que imputação é adiada para depois do split) estão em [`reports/cleaning.md`](reports/cleaning.md). O split treino/validação/teste está documentado em [`reports/split.md`](reports/split.md).
 
 ## Estrutura planejada
 
@@ -75,6 +75,12 @@ Para limpar os dados e gerar `data/processed/koi_clean.csv`:
 python src/cleaning.py
 ```
 
+Para gerar os splits de treino, validação e teste:
+
+```bash
+python src/split.py
+```
+
 ## Tasks
 
 ### Fundação e dados
@@ -93,7 +99,7 @@ python src/cleaning.py
 - [x] Investigar valores ausentes, duplicados e outliers
 - [x] Definir as variáveis que poderão ser usadas sem vazamento de alvo
 - [x] Construir o pipeline de limpeza e transformação
-- [ ] Separar dados de treino, validação e teste
+- [x] Separar dados de treino, validação e teste
 
 ### Machine learning
 
