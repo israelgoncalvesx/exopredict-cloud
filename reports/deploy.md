@@ -41,8 +41,20 @@ A API fica exposta pelo IP público na porta 8000, sem TLS. Aceitável para port
 1. [share.streamlit.io](https://share.streamlit.io) → *New app*.
 2. Repositório: `israelgoncalvesx/exopredict-cloud`, branch `main`, arquivo principal: `app/interface.py`.
 3. **Dependências**: por padrão o Streamlit Cloud instala `requirements.txt` da raiz — como esse é o monolítico do projeto (inclui Jupyter, SHAP etc.), nas *Advanced settings* apontar para `requirements-interface.txt` em vez disso, para um deploy mais leve e rápido.
-4. **Secret** `EXOPREDICT_API_URL`, apontando para a API publicada: `http://<IP-publico-da-instancia>:8000`.
+4. **Secret** `EXOPREDICT_API_URL`, apontando para a API publicada: `http://54.233.91.240:8000`.
 5. Deploy — o Streamlit Cloud cuida do resto (build, HTTPS próprio, URL pública `*.streamlit.app`).
+
+## Endereços publicados
+
+- **API**: [http://54.233.91.240:8000](http://54.233.91.240:8000) (Elastic IP, fixo — não muda com reinício da instância). `/health`, `/model-info` e `/predict` testados e funcionando.
+- **Interface**: [https://israel-exopredict.streamlit.app](https://israel-exopredict.streamlit.app) — pública, testada de ponta a ponta (carregar exemplo → classificar → resultado exibido corretamente).
+
+## Detalhes que apareceram na prática (não previstos no plano original)
+
+- **Streamlit Community Cloud não tem mais um campo "requirements file" separado** nas Advanced settings (só Python version e Secrets) — a versão atual da plataforma usa uma convenção própria: procura `requirements.txt` na mesma pasta do arquivo principal (`app/interface.py`) antes de olhar a raiz do repo. Resolvido criando `app/requirements.txt` com o mesmo conteúdo de `requirements-interface.txt`.
+- **`curl` a partir de um agente/bot recebe redirecionamento para login mesmo em app configurado como público** — a plataforma parece tratar tráfego sem navegador de forma diferente. Testado direto num navegador (inclusive em janela anônima, sem sessão) e funciona normalmente sem pedir login. Não é um problema real, só uma limitação de como validar via linha de comando.
+- **Security group da EC2 não libera nenhuma porta customizada por padrão** — precisou adicionar regra de inbound manualmente para a porta 8000 (só a 22/SSH vem liberada por padrão ao criar a instância).
+- **IP público de instância EC2 muda a cada parada/reinício** — resolvido associando um Elastic IP antes de configurar o secret da interface, para não quebrar a integração se a instância for reiniciada no futuro.
 
 ## Elastic IP (recomendado)
 
