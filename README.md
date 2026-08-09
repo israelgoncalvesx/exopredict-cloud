@@ -13,6 +13,8 @@ A base inicial do projeto usa o catálogo Kepler Objects of Interest (KOI). O CS
 - classes encontradas: `CONFIRMED`, `CANDIDATE` e `FALSE POSITIVE`;
 - consultas iniciais para conferir estrutura, amostras, distribuição das classes e média do `koi_score`.
 
+A análise exploratória está em andamento em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados e conclusões de cada etapa são documentados em [`reports/eda.md`](reports/eda.md).
+
 ## Estrutura planejada
 
 ```text
