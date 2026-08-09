@@ -103,6 +103,26 @@ Mediana por classe:
 - `koi_duration` mostra pouca diferença entre classes — candidata a feature de menor poder preditivo isolado.
 - `koi_period`: `CANDIDATE` tem mediana maior (~20 dias) que `CONFIRMED` (~11 dias). Provável viés observacional (períodos longos geram menos trânsitos na janela do Kepler, dificultando confirmação) mais do que uma diferença física real entre as classes — não interpretar como "candidatos têm períodos maiores por natureza".
 
+## 8. Correlação entre variáveis numéricas
+
+Heatmap de correlação sobre um conjunto curado de variáveis físicas interpretáveis (não as 141 colunas — as `_err1`/`_err2` são metadados redundantes por definição, ver bloco 1): geometria do trânsito, características do planeta inferido, características da estrela hospedeira e qualidade do sinal.
+
+![Correlação entre variáveis](images/eda_06.png)
+
+**Conclusões:**
+- Nenhum par passa de 0,9 — não há sinal de multicolinearidade severa que obrigue a descartar variáveis nesta fase.
+- Pares com correlação moderada e fisicamente explicável: `koi_prad`↔`koi_impact` (0,68 — trânsitos mais rasantes tendem a inflar a estimativa de raio, reforça o achado dos blocos 5–6), `koi_teq`↔`koi_num_transits` (0,62 — planetas mais quentes/próximos têm período menor, logo mais trânsitos na janela do Kepler), `koi_depth`↔`koi_model_snr` (0,58 — trânsito mais profundo, sinal mais forte), e o cluster de propriedades estelares (`koi_slogg`, `koi_srad`, `koi_smass`, `koi_steff`) correlacionado entre si, como esperado de relações astrofísicas conhecidas (evolução estelar).
+- Nenhuma dessas relações é redundância de dado (duas colunas medindo a mesma coisa) — são relações físicas reais entre grandezas distintas, então não há razão para eliminar variáveis só por causa desta matriz.
+
 ---
 
-*(em andamento — próximo bloco: correlação entre variáveis numéricas)*
+## Resumo executivo
+
+A EDA completa (8 blocos) está concluída. Principais decisões que ela embasa para as próximas etapas do checklist:
+
+1. **Vazamento de alvo** — além de `koi_disposition`, `koi_pdisposition`, `koi_score`, `koi_comment` (já apontados em `data/README.md`), a EDA identificou `kepler_name` como vazamento estrutural (só preenchido quando `CONFIRMED`).
+2. **Colunas a descartar** — 19 colunas 100% nulas (bloco 3); as ~46 colunas `_err1`/`_err2` precisam de decisão específica (usar como incerteza relativa ou descartar), não tratamento igual às medidas.
+3. **Qualidade de dado a corrigir na limpeza** — `koi_depth == 0` (1 linha, placeholder), `koi_prad` acima de escala estelar concentrado em `FALSE POSITIVE`/score nulo (não é outlier estatístico comum).
+4. **Desbalanceamento de classes** — moderado (~2,4x), não deve exigir SMOTE agressivo; `class_weight` deve bastar.
+5. **Features com sinal aparente de poder preditivo** — `koi_prad`, `koi_depth` (separam bem `FALSE POSITIVE`); `koi_duration` mostrou pouca separação isolada.
+6. **Transformações a considerar** — `log10` em `koi_period`, `koi_prad`, `koi_depth` (cauda longa); nenhuma variável do conjunto curado exige remoção por multicolinearidade severa.

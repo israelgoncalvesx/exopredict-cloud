@@ -13,7 +13,7 @@ A base inicial do projeto usa o catálogo Kepler Objects of Interest (KOI). O CS
 - classes encontradas: `CONFIRMED`, `CANDIDATE` e `FALSE POSITIVE`;
 - consultas iniciais para conferir estrutura, amostras, distribuição das classes e média do `koi_score`.
 
-A análise exploratória está em andamento em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados e conclusões de cada etapa são documentados em [`reports/eda.md`](reports/eda.md).
+A análise exploratória completa está em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados, conclusões e o resumo executivo estão documentados em [`reports/eda.md`](reports/eda.md).
 
 ## Estrutura planejada
 
@@ -77,8 +77,8 @@ python src/validate_data_quality.py
 
 ### Análise e preparação
 
-- [ ] Realizar análise exploratória completa
-- [ ] Investigar valores ausentes, duplicados e outliers
+- [x] Realizar análise exploratória completa
+- [x] Investigar valores ausentes, duplicados e outliers
 - [ ] Definir as variáveis que poderão ser usadas sem vazamento de alvo
 - [ ] Construir o pipeline de limpeza e transformação
 - [ ] Separar dados de treino, validação e teste
