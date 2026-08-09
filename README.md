@@ -13,7 +13,7 @@ A base inicial do projeto usa o catálogo Kepler Objects of Interest (KOI). O CS
 - classes encontradas: `CONFIRMED`, `CANDIDATE` e `FALSE POSITIVE`;
 - consultas iniciais para conferir estrutura, amostras, distribuição das classes e média do `koi_score`.
 
-A análise exploratória completa está em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados, conclusões e o resumo executivo estão documentados em [`reports/eda.md`](reports/eda.md).
+A análise exploratória completa está em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados, conclusões e o resumo executivo estão documentados em [`reports/eda.md`](reports/eda.md). A classificação das 141 colunas e a lista de features sem vazamento de alvo estão em [`reports/feature_selection.md`](reports/feature_selection.md).
 
 ## Estrutura planejada
 
@@ -63,6 +63,12 @@ Para validar a qualidade dos dados brutos:
 python src/validate_data_quality.py
 ```
 
+Para classificar as colunas e gerar a lista de variáveis utilizáveis sem vazamento de alvo (`reports/feature_selection.md`):
+
+```bash
+python src/define_feature_columns.py
+```
+
 ## Tasks
 
 ### Fundação e dados
@@ -79,7 +85,7 @@ python src/validate_data_quality.py
 
 - [x] Realizar análise exploratória completa
 - [x] Investigar valores ausentes, duplicados e outliers
-- [ ] Definir as variáveis que poderão ser usadas sem vazamento de alvo
+- [x] Definir as variáveis que poderão ser usadas sem vazamento de alvo
 - [ ] Construir o pipeline de limpeza e transformação
 - [ ] Separar dados de treino, validação e teste
 
