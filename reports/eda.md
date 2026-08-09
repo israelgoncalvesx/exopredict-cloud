@@ -46,6 +46,25 @@ Distribuição por faixa de % de nulo:
 - **0 linhas** duplicadas por parâmetros físicos (`koi_period`, `koi_duration`, `koi_depth`, `koi_prad`) — sem duplicidade de exportação.
 - **1.350 `kepid` duplicados**, com 8.214 estrelas únicas para 9.564 KOIs — ou seja, várias estrelas têm mais de um KOI associado (sistemas multi-planetários, ex.: Kepler-90). Isso é esperado fisicamente, não é problema de qualidade de dado.
 
+## 5. Outliers nas variáveis físicas principais
+
+Boxplots em escala log de `koi_period`, `koi_prad`, `koi_depth` e `koi_duration` (escala log necessária: distribuição de cauda longa, comum em grandezas astronômicas).
+
+![Outliers nas variáveis físicas](images/eda_03.png)
+
+Percentual de outliers pelo critério IQR (1,5×IQR):
+
+| coluna | % outliers (IQR) |
+|---|---|
+| koi_period | 16,4% |
+| koi_prad | 16,0% |
+| koi_depth | 19,5% |
+| koi_duration | 9,1% |
+
+**Conclusão preliminar:** percentuais altos são esperados em distribuição assimétrica — o critério IQR clássico marca boa parte da cauda longa como "outlier" mesmo sendo fisicamente válido (ex.: períodos orbitais longos, planetas gigantes reais existem).
+
+**Achado relevante:** os valores mais extremos de `koi_prad` (até ~200.000 raios terrestres — maior que muitas estrelas) são quase todos `FALSE POSITIVE` com `koi_score` nulo (não vetted), com 2 exceções em `CANDIDATE` também com score nulo. Isso não é um outlier estatístico "válido só que raro": é fisicamente impossível para um planeta real, provável sintoma de ajuste de trânsito malsucedido (ex.: binária eclipsante, trânsito rasante). **Implicação para a limpeza:** `koi_score` nulo já é, por si, um sinalizador de qualidade da medida; `koi_prad` acima de escala estelar (~100 R⊕) merece tratamento específico, não só winsorização estatística cega.
+
 ---
 
-*(em andamento — próximos blocos: outliers, distribuições das variáveis físicas, variável × classe, correlação)*
+*(em andamento — próximos blocos: distribuições das variáveis físicas, variável × classe, correlação)*
