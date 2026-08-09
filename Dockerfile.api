@@ -1,0 +1,18 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements-api.txt .
+RUN pip install --no-cache-dir -r requirements-api.txt
+
+# preserva app/ e src/ como diretórios irmãos sob /app: app/main.py insere
+# src/ no sys.path e carrega o Pipeline via joblib, que referencia o módulo
+# "transform" (não "src.transform") — precisa ficar importável desse jeito.
+COPY src/transform.py src/transform.py
+COPY app/main.py app/main.py
+COPY models/gradient_boosting_v1.joblib models/gradient_boosting_v1.joblib
+COPY models/gradient_boosting_v1.json models/gradient_boosting_v1.json
+
+EXPOSE 8000
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

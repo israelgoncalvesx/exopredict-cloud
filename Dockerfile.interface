@@ -1,0 +1,13 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements-interface.txt .
+RUN pip install --no-cache-dir -r requirements-interface.txt
+
+COPY app/interface.py app/interface.py
+COPY app/sample_koi.csv app/sample_koi.csv
+
+EXPOSE 8501
+
+CMD ["streamlit", "run", "app/interface.py", "--server.address=0.0.0.0", "--server.port=8501"]

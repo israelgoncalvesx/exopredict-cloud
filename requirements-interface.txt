@@ -1,0 +1,5 @@
+# Dependências mínimas para rodar app/interface.py — subconjunto de requirements.txt.
+# Mantido separado para builds de Docker menores, específicos da interface.
+streamlit==1.61.1
+requests==2.34.2
+pandas==3.0.5

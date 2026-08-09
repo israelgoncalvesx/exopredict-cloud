@@ -1,0 +1,9 @@
+# Dependências mínimas para servir app/main.py — subconjunto de requirements.txt
+# (que também cobre EDA, treino e testes). Mantido separado para builds de
+# Docker menores e mais rápidos, específicos do serviço de API.
+fastapi==0.141.1
+uvicorn[standard]==0.52.1
+joblib==1.5.3
+pandas==3.0.5
+numpy==2.4.6
+scikit-learn==1.9.0

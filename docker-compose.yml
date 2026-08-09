@@ -1,0 +1,25 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  interface:
+    build:
+      context: .
+      dockerfile: Dockerfile.interface
+    ports:
+      - "8501:8501"
+    environment:
+      # nome do serviço "api" resolvido pela rede interna do compose, não localhost
+      EXOPREDICT_API_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
