@@ -51,3 +51,12 @@ def test_predict_com_dados_parciais_nao_quebra():
 def test_predict_sem_nenhum_dado_nao_quebra():
     resposta = client.post("/predict", json={})
     assert resposta.status_code == 200
+
+
+def test_metrics_reflete_previsoes_feitas():
+    client.post("/predict", json={"koi_period": 10.5, "koi_prad": 2.1, "koi_depth": 450})
+
+    resposta = client.get("/metrics")
+    assert resposta.status_code == 200
+    assert "exopredict_predicoes_total" in resposta.text
+    assert "exopredict_predict_latencia_segundos" in resposta.text

@@ -17,6 +17,8 @@ A análise exploratória completa está em [`notebooks/01_eda.ipynb`](notebooks/
   - API: http://54.233.91.240:8000
   - Interface: https://israel-exopredict.streamlit.app
 
+Monitoramento básico (log estruturado de previsões + métricas Prometheus em `/metrics`) está documentado em [`reports/monitoring.md`](reports/monitoring.md).
+
 ## Estrutura planejada
 
 ```text
@@ -189,7 +191,7 @@ docker compose up --build
 - [x] Configurar lint, formatação e integração contínua
 - [x] Criar imagens Docker
 - [x] Publicar aplicação, API e modelo em nuvem
-- [ ] Adicionar monitoramento básico da aplicação e das previsões
+- [x] Adicionar monitoramento básico da aplicação e das previsões
 
 ## Objetivo final
 
