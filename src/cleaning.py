@@ -46,10 +46,24 @@ def corrigir_koi_prad_implausivel(
     return df
 
 
+def engenheirar_koi_num_quarters(df: pd.DataFrame) -> pd.DataFrame:
+    """koi_quarters é uma string binária (1 quarter observado / 0 não observado).
+
+    Alta cardinalidade (170 valores únicos no treino) inviabiliza one-hot;
+    a contagem de '1's (quantos quarters do Kepler observaram o alvo) é uma
+    grandeza física legítima e numérica. Mantém a coluna original também —
+    quem for usá-la escolhe explicitamente qual das duas quer.
+    """
+    df = df.copy()
+    df["koi_num_quarters"] = df["koi_quarters"].str.count("1")
+    return df
+
+
 def limpar_dados(df: pd.DataFrame) -> pd.DataFrame:
     df = selecionar_colunas_utilizaveis(df)
     df = corrigir_koi_depth_zero(df)
     df = corrigir_koi_prad_implausivel(df)
+    df = engenheirar_koi_num_quarters(df)
     return df
 
 
