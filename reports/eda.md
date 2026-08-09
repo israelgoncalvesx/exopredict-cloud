@@ -84,6 +84,25 @@ Histogramas de `koi_period`, `koi_prad` e `koi_depth` em `log10` (dada a cauda l
 - `koi_steff` já é bem comportada sem transformação — esperado, já que o Kepler mirou predominantemente estrelas tipo Sol (pico ~5700K).
 - **`koi_depth == 0` em 1 única linha** (`K00126.02`, `CANDIDATE`, `koi_score` 0,997) — caso isolado, provavelmente `0` usado como placeholder em vez de `NaN` na exportação original. Não é padrão sistemático, mas precisa ser convertido para `NaN` antes de aplicar log na etapa de transformação.
 
+## 7. Variáveis físicas por classe
+
+Boxplot (escala log) de `koi_period`, `koi_prad`, `koi_depth` e `koi_duration` agrupados por `koi_disposition`, para antecipar quais variáveis têm poder de separação entre classes.
+
+![Variáveis físicas por classe](images/eda_05.png)
+
+Mediana por classe:
+
+| classe | koi_period | koi_prad | koi_depth | koi_duration |
+|---|---|---|---|---|
+| CONFIRMED | 11,35 | 2,16 | 448,60 | 3,49 |
+| CANDIDATE | 20,04 | 1,74 | 242,00 | 3,61 |
+| FALSE POSITIVE | 5,24 | 8,97 | 575,95 | 4,06 |
+
+**Conclusões:**
+- `koi_prad` e `koi_depth` separam bem `FALSE POSITIVE` das outras duas classes (mediana de raio ~9 R⊕ vs. ~2 R⊕) — coerente com o achado do bloco 5 de que raios inflados vêm majoritariamente de ajustes de trânsito malsucedidos. Fortes candidatas a features com poder preditivo real.
+- `koi_duration` mostra pouca diferença entre classes — candidata a feature de menor poder preditivo isolado.
+- `koi_period`: `CANDIDATE` tem mediana maior (~20 dias) que `CONFIRMED` (~11 dias). Provável viés observacional (períodos longos geram menos trânsitos na janela do Kepler, dificultando confirmação) mais do que uma diferença física real entre as classes — não interpretar como "candidatos têm períodos maiores por natureza".
+
 ---
 
-*(em andamento — próximos blocos: variável × classe, correlação)*
+*(em andamento — próximo bloco: correlação entre variáveis numéricas)*
