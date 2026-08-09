@@ -13,7 +13,7 @@ A base inicial do projeto usa o catálogo Kepler Objects of Interest (KOI). O CS
 - classes encontradas: `CONFIRMED`, `CANDIDATE` e `FALSE POSITIVE`;
 - consultas iniciais para conferir estrutura, amostras, distribuição das classes e média do `koi_score`.
 
-A análise exploratória completa está em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados, conclusões e o resumo executivo estão documentados em [`reports/eda.md`](reports/eda.md). A classificação das 141 colunas e a lista de features sem vazamento de alvo estão em [`reports/feature_selection.md`](reports/feature_selection.md). As decisões de limpeza e transformação (e por que imputação é adiada para depois do split) estão em [`reports/cleaning.md`](reports/cleaning.md). O split treino/validação/teste está documentado em [`reports/split.md`](reports/split.md). O modelo baseline (regressão logística, F1-macro 0,881 na validação) está documentado em [`reports/baseline_model.md`](reports/baseline_model.md). A comparação de modelos candidatos (Gradient Boosting venceu, F1-macro 0,925) está em [`reports/model_comparison.md`](reports/model_comparison.md). A comparação de estratégias de desbalanceamento (confirma `class_weight="balanced"` como suficiente) está em [`reports/imbalance.md`](reports/imbalance.md).
+A análise exploratória completa está em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados, conclusões e o resumo executivo estão documentados em [`reports/eda.md`](reports/eda.md). A classificação das 141 colunas e a lista de features sem vazamento de alvo estão em [`reports/feature_selection.md`](reports/feature_selection.md). As decisões de limpeza e transformação (e por que imputação é adiada para depois do split) estão em [`reports/cleaning.md`](reports/cleaning.md). O split treino/validação/teste está documentado em [`reports/split.md`](reports/split.md). O modelo baseline (regressão logística, F1-macro 0,881 na validação) está documentado em [`reports/baseline_model.md`](reports/baseline_model.md). A comparação de modelos candidatos (Gradient Boosting venceu, F1-macro 0,925) está em [`reports/model_comparison.md`](reports/model_comparison.md). A comparação de estratégias de desbalanceamento (confirma `class_weight="balanced"` como suficiente) está em [`reports/imbalance.md`](reports/imbalance.md). A avaliação por classe e matriz de confusão (os erros mais graves são quase inexistentes) está em [`reports/evaluation.md`](reports/evaluation.md).
 
 ## Estrutura planejada
 
@@ -99,6 +99,12 @@ Para comparar estratégias de tratamento do desbalanceamento:
 python src/handle_imbalance.py
 ```
 
+Para a avaliação consolidada por classe e matriz de confusão:
+
+```bash
+python src/evaluate_model.py
+```
+
 ## Tasks
 
 ### Fundação e dados
@@ -124,7 +130,7 @@ python src/handle_imbalance.py
 - [x] Criar um modelo baseline
 - [x] Treinar e comparar modelos candidatos
 - [x] Tratar o desbalanceamento entre as classes
-- [ ] Avaliar métricas por classe e matriz de confusão
+- [x] Avaliar métricas por classe e matriz de confusão
 - [ ] Selecionar, versionar e salvar o melhor modelo
 - [ ] Adicionar explicabilidade das previsões
 
