@@ -7,7 +7,8 @@ def test_grupos_cobrem_todas_as_colunas_sem_sobreposicao(df_bruto):
     todas_classificadas = [coluna for colunas in grupos.values() for coluna in colunas]
 
     assert sorted(todas_classificadas) == sorted(df_bruto.columns)
-    assert len(todas_classificadas) == len(set(todas_classificadas)), "coluna classificada em mais de um grupo"
+    mensagem = "coluna classificada em mais de um grupo"
+    assert len(todas_classificadas) == len(set(todas_classificadas)), mensagem
 
 
 def test_alvo_e_koi_disposition(df_bruto):

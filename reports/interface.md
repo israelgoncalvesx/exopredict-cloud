@@ -35,6 +35,7 @@ streamlit run app/interface.py
 
 ```python
 import pandas as pd
+
 df = pd.read_csv("data/processed/test.csv")
 partes = [g.sample(6, random_state=42) for _, g in df.groupby("koi_disposition")]
 pd.concat(partes).sample(frac=1, random_state=42).to_csv("app/sample_koi.csv", index=False)

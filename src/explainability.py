@@ -24,8 +24,13 @@ def importancia_global(modelo, X_teste: pd.DataFrame, y_teste: pd.Series) -> pd.
     incluso), não só sobre o classificador.
     """
     resultado = permutation_importance(
-        modelo, X_teste, y_teste,
-        scoring="f1_macro", n_repeats=10, random_state=42, n_jobs=-1,
+        modelo,
+        X_teste,
+        y_teste,
+        scoring="f1_macro",
+        n_repeats=10,
+        random_state=42,
+        n_jobs=-1,
     )
     return pd.Series(resultado.importances_mean, index=X_teste.columns).sort_values(ascending=False)
 
@@ -59,8 +64,11 @@ def plotar_shap_summary(explainer, X_transformado, nomes_features, classes) -> N
     for i, classe in enumerate(classes):
         fig = plt.figure(figsize=(8, 6))
         shap.summary_plot(
-            shap_values[:, :, i], X_transformado, feature_names=nomes_features,
-            show=False, max_display=15,
+            shap_values[:, :, i],
+            X_transformado,
+            feature_names=nomes_features,
+            show=False,
+            max_display=15,
         )
         plt.title(f"SHAP — impacto das features na previsão de {classe}")
         plt.tight_layout()
@@ -69,7 +77,9 @@ def plotar_shap_summary(explainer, X_transformado, nomes_features, classes) -> N
         plt.close(fig)
 
 
-def explicar_caso(explainer, X_transformado, nomes_features, classes, indice: int, classe_alvo: str) -> None:
+def explicar_caso(
+    explainer, X_transformado, nomes_features, classes, indice: int, classe_alvo: str
+) -> None:
     idx_classe = classes.index(classe_alvo)
     shap_values = explainer.shap_values(X_transformado[indice : indice + 1])
 
@@ -109,7 +119,7 @@ def main() -> None:
     ]
     if len(erros) > 0:
         indice_erro = erros.index[0]
-        print(f"\nExplicando caso de erro (CONFIRMED previsto como CANDIDATE), índice {indice_erro}...")
+        print(f"\nExplicando erro (CONFIRMED previsto como CANDIDATE), índice {indice_erro}")
         explicar_caso(explainer, X_transformado, nomes_features, classes, indice_erro, "CANDIDATE")
 
     print(f"\nImagens salvas em {IMAGES_DIR.relative_to(PROJECT_ROOT)}/")

@@ -2,19 +2,16 @@ from pathlib import Path
 
 from sqlalchemy import create_engine, text
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 DATABASE_PATH = PROJECT_ROOT / "database" / "exopredict.db"
 
-engine = create_engine(
-    f"sqlite:///{DATABASE_PATH}"
-)
+engine = create_engine(f"sqlite:///{DATABASE_PATH}")
 
 print(f"Banco que será analisado: {DATABASE_PATH}")
 print(f"O banco existe? {DATABASE_PATH.exists()}")
 
-#CONSULTA
+# CONSULTA
 
 query_tables = text(
     """
@@ -33,7 +30,7 @@ print("\nTabelas encontradas:")
 for tabela in tabelas:
     print(tabela[0])
 
-#DESCREVER A ESTRUTURA DA TABELA
+# DESCREVER A ESTRUTURA DA TABELA
 
 query_columns = text(
     """
@@ -72,7 +69,7 @@ print("\nAmostra de colunas relacionadas à classificação:")
 for registro in amostra:
     print(registro)
 
-#COMPARAR DUAS CLASSIFICAÇÕES
+# COMPARAR DUAS CLASSIFICAÇÕES
 
 query_disposition_comparison = text(
     """
@@ -91,20 +88,14 @@ query_disposition_comparison = text(
 )
 
 with engine.connect() as connection:
-    comparacoes = connection.execute(
-        query_disposition_comparison
-    ).fetchall()
+    comparacoes = connection.execute(query_disposition_comparison).fetchall()
 
 print("\nComparação entre as classificações:")
 
 for disposicao_final, disposicao_pipeline, quantidade in comparacoes:
-    print(
-        f"{disposicao_final} | "
-        f"{disposicao_pipeline} | "
-        f"{quantidade}"
-    )
+    print(f"{disposicao_final} | {disposicao_pipeline} | {quantidade}")
 
-#MEDIA KOI SCORE POR CLASSE
+# MEDIA KOI SCORE POR CLASSE
 
 query_score = text(
     """

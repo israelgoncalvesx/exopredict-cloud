@@ -3,7 +3,6 @@ from pathlib import Path
 
 import pandas as pd
 from fastapi.testclient import TestClient
-
 from main import app
 
 client = TestClient(app)
@@ -44,9 +43,7 @@ def test_predict_com_exemplo_real_do_teste(splits):
 
 
 def test_predict_com_dados_parciais_nao_quebra():
-    resposta = client.post(
-        "/predict", json={"koi_period": 10.5, "koi_prad": 2.1, "koi_depth": 450}
-    )
+    resposta = client.post("/predict", json={"koi_period": 10.5, "koi_prad": 2.1, "koi_depth": 450})
     assert resposta.status_code == 200
     assert resposta.json()["classe_prevista"] in {"CONFIRMED", "CANDIDATE", "FALSE POSITIVE"}
 

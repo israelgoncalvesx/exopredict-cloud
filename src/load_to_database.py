@@ -1,23 +1,18 @@
-#BIBLIOTECAS
+# BIBLIOTECAS
 from pathlib import Path
+
 import pandas as pd
 from sqlalchemy import create_engine, text
 
-#CAMINHOS
+# CAMINHOS
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 CSV_PATH = PROJECT_ROOT / "data" / "raw" / "kepler_koi.csv"
 DATABASE_PATH = PROJECT_ROOT / "database" / "exopredict.db"
 
-df = pd.read_csv(
-    CSV_PATH,
-    comment="#",
-    dtype={
-        "koi_quarters": "string"
-    }
-)
+df = pd.read_csv(CSV_PATH, comment="#", dtype={"koi_quarters": "string"})
 
-#CARÁCTERÍSTICAS DO CSV
+# CARÁCTERÍSTICAS DO CSV
 
 print(f"Quantidade de linhas: {df.shape[0]}")
 print(f"Quantidade de colunas: {df.shape[1]}")
@@ -25,21 +20,14 @@ print(f"Quantidade de colunas: {df.shape[1]}")
 print("\nClassificações encontradas:")
 print(df["koi_disposition"].value_counts())
 
-#CONEXÃO PYTHON - SQLite
+# CONEXÃO PYTHON - SQLite
 
-engine = create_engine(
-    f"sqlite:///{DATABASE_PATH}"
-)
+engine = create_engine(f"sqlite:///{DATABASE_PATH}")
 
 print(f"\nConexão preparada para: {DATABASE_PATH}")
 
-#SALVAR DATAFRAME DENTRO DO BANCO SQLite
-df.to_sql(
-    name="koi_raw",
-    con=engine,
-    if_exists="replace",
-    index=False
-)
+# SALVAR DATAFRAME DENTRO DO BANCO SQLite
+df.to_sql(name="koi_raw", con=engine, if_exists="replace", index=False)
 
 print("\nDados enviados para a tabela koi_raw.")
 
@@ -55,7 +43,7 @@ with engine.connect() as connection:
 
 print(f"Total de registros no banco: {total_registros}")
 
-#EXECUTANDO CONSULTA
+# EXECUTANDO CONSULTA
 
 query_disposition = text(
     """

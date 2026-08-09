@@ -1,6 +1,3 @@
-import pandas as pd
-
-
 def test_splits_nao_se_sobrepoem(splits):
     treino, validacao, teste = splits
 
@@ -25,4 +22,5 @@ def test_estratificacao_preserva_proporcao_de_classes(splits, df_limpo):
     for split in (treino, validacao, teste):
         proporcao_split = split["koi_disposition"].value_counts(normalize=True)
         diferenca_maxima = (proporcao_original - proporcao_split).abs().max()
-        assert diferenca_maxima < 0.02, "split desviou mais de 2 pontos percentuais da proporção original"
+        mensagem = "split desviou mais de 2 pontos percentuais da proporção original"
+        assert diferenca_maxima < 0.02, mensagem

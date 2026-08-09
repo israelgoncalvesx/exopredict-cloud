@@ -76,9 +76,7 @@ def classificar_colunas(df: pd.DataFrame) -> dict[str, list[str]]:
 def colunas_utilizaveis(grupos: dict[str, list[str]]) -> list[str]:
     """Todas as colunas aptas a virar feature: sem vazamento, sem
     identificador, sem metadado não-físico e sem coluna 100% vazia."""
-    return sorted(
-        grupos["incerteza"] + grupos["flag_automatica"] + grupos["feature_fisica"]
-    )
+    return sorted(grupos["incerteza"] + grupos["flag_automatica"] + grupos["feature_fisica"])
 
 
 def gerar_relatorio(grupos: dict[str, list[str]], total_colunas: int) -> str:
@@ -111,8 +109,7 @@ def gerar_relatorio(grupos: dict[str, list[str]], total_colunas: int) -> str:
         "".join(f"- `{c}`\n" for c in grupos["vazamento"]),
         "## Metadado não-físico (excluir da modelagem)",
         "",
-        "Proveniência, links e configuração do ajuste — não são medida "
-        "astrofísica do sistema.",
+        "Proveniência, links e configuração do ajuste — não são medida astrofísica do sistema.",
         "",
         "".join(f"- `{c}`\n" for c in grupos["metadado_nao_fisico"]),
         f"## Colunas 100% vazias (excluir — {len(grupos['vazia_100pct'])} colunas)",

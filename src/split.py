@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from cleaning import PROCESSED_PATH, limpar_dados, carregar_dados_brutos
+from cleaning import PROCESSED_PATH, carregar_dados_brutos, limpar_dados
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"

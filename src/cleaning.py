@@ -17,14 +17,17 @@ def carregar_dados_brutos() -> pd.DataFrame:
 
 
 def selecionar_colunas_utilizaveis(df: pd.DataFrame) -> pd.DataFrame:
-    """Mantém apenas identificador + alvo + features sem vazamento (reports/feature_selection.md)."""
+    """Mantém apenas identificador + alvo + features sem vazamento.
+
+    Ver reports/feature_selection.md para o raciocínio completo.
+    """
     grupos = classificar_colunas(df)
     colunas = IDENTIFICADORES + ALVO + colunas_utilizaveis(grupos)
     return df[colunas].copy()
 
 
 def corrigir_koi_depth_zero(df: pd.DataFrame) -> pd.DataFrame:
-    """koi_depth == 0 é placeholder de dado ausente, não uma medida real (reports/eda.md, bloco 6)."""
+    """koi_depth == 0 é placeholder de dado ausente, não medida real (reports/eda.md, bloco 6)."""
     df = df.copy()
     df.loc[df["koi_depth"] == 0, "koi_depth"] = np.nan
     return df

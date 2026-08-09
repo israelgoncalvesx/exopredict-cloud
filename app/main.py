@@ -9,7 +9,6 @@ retreinado com uma feature a mais, a API acompanha sem edição manual.
 import json
 import sys
 from pathlib import Path
-from typing import Optional
 
 import joblib
 import pandas as pd
@@ -32,12 +31,14 @@ _features = _metadados["features"]
 KOIFeatures: type[BaseModel] = create_model(
     "KOIFeatures",
     __config__=ConfigDict(extra="ignore"),
-    **{nome: (Optional[float], None) for nome in _features},
+    **{nome: (float | None, None) for nome in _features},
 )
 
 app = FastAPI(
     title="ExoPredict Cloud API",
-    description="Classifica um KOI (Kepler Object of Interest) como CONFIRMED, CANDIDATE ou FALSE POSITIVE.",
+    description=(
+        "Classifica um KOI (Kepler Object of Interest) como CONFIRMED, CANDIDATE ou FALSE POSITIVE."
+    ),
     version=VERSAO_MODELO,
 )
 
@@ -74,5 +75,7 @@ def predict(entrada: KOIFeatures) -> Previsao:
 
     return Previsao(
         classe_prevista=classe_prevista,
-        probabilidades={c: round(float(p), 4) for c, p in zip(classes, probabilidades)},
+        probabilidades={
+            c: round(float(p), 4) for c, p in zip(classes, probabilidades, strict=True)
+        },
     )

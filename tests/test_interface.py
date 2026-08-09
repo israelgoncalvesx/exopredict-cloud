@@ -60,4 +60,5 @@ def test_carregar_exemplo_e_classificar_nao_quebra(execucao):
 
     assert not at.exception
     assert len(at.success) == 1
-    assert any(classe in at.success[0].value for classe in ("CONFIRMED", "CANDIDATE", "FALSE POSITIVE"))
+    classes = ("CONFIRMED", "CANDIDATE", "FALSE POSITIVE")
+    assert any(classe in at.success[0].value for classe in classes)

@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import pandas as pd
 from imblearn.over_sampling import SMOTE
 from imblearn.pipeline import Pipeline as PipelineImb
 from sklearn.ensemble import HistGradientBoostingClassifier
@@ -29,9 +28,7 @@ def construir_cenarios(colunas_numericas: list[str]) -> dict[str, Pipeline]:
                 ("preprocessamento", preprocessador()),
                 (
                     "classificador",
-                    HistGradientBoostingClassifier(
-                        class_weight="balanced", random_state=42
-                    ),
+                    HistGradientBoostingClassifier(class_weight="balanced", random_state=42),
                 ),
             ]
         ),

@@ -1,11 +1,11 @@
-#BIBLIOTECAS
+# BIBLIOTECAS
+import sys
 from dataclasses import dataclass
 from pathlib import Path
-import sys
 
 import pandas as pd
 
-#CAMINHOS
+# CAMINHOS
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 CSV_PATH = PROJECT_ROOT / "data" / "raw" / "kepler_koi.csv"
 
@@ -66,10 +66,14 @@ def check_koi_score_no_intervalo(df: pd.DataFrame) -> ResultadoCheck:
 
 
 def check_medidas_fisicas_nao_negativas(df: pd.DataFrame) -> ResultadoCheck:
-    """Grandezas físicas (período, duração, profundidade, raio, temperatura) não podem ser negativas."""
+    """Grandezas físicas (período, duração, profundidade, raio, temperatura) não são negativas."""
     colunas = [
-        "koi_period", "koi_duration", "koi_depth",
-        "koi_prad", "koi_steff", "koi_srad",
+        "koi_period",
+        "koi_duration",
+        "koi_depth",
+        "koi_prad",
+        "koi_steff",
+        "koi_srad",
     ]
     negativos = {coluna: int((df[coluna] < 0).sum()) for coluna in colunas}
     total_negativos = sum(negativos.values())
@@ -101,13 +105,7 @@ CHECKS = [
 
 
 def main() -> None:
-    df = pd.read_csv(
-        CSV_PATH,
-        comment="#",
-        dtype={
-            "koi_quarters": "string"
-        }
-    )
+    df = pd.read_csv(CSV_PATH, comment="#", dtype={"koi_quarters": "string"})
 
     resultados = [check(df) for check in CHECKS]
 

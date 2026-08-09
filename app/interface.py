@@ -56,28 +56,31 @@ def montar_formulario(valores_iniciais: dict) -> dict:
     campos = list(CAMPOS_FORMULARIO.items())
     metade = len(campos) // 2
 
-    for coluna, itens in zip((col1, col2), (campos[:metade], campos[metade:])):
+    for coluna, itens in zip((col1, col2), (campos[:metade], campos[metade:]), strict=True):
         with coluna:
             for nome_coluna, (rotulo, minimo, padrao) in itens:
                 valor_inicial = valores_iniciais.get(nome_coluna, padrao)
                 if isinstance(padrao, int):
                     entrada[nome_coluna] = st.number_input(
-                        rotulo, min_value=int(minimo),
+                        rotulo,
+                        min_value=int(minimo),
                         value=int(valor_inicial) if pd.notna(valor_inicial) else padrao,
                     )
                 else:
                     entrada[nome_coluna] = st.number_input(
-                        rotulo, min_value=float(minimo),
+                        rotulo,
+                        min_value=float(minimo),
                         value=float(valor_inicial) if pd.notna(valor_inicial) else padrao,
                     )
 
     st.markdown("**Flags automáticas de falso positivo** (0 = não, 1 = sim)")
     cols_flags = st.columns(4)
-    for coluna, (nome_coluna, rotulo) in zip(cols_flags, CAMPOS_FLAG.items()):
+    for coluna, (nome_coluna, rotulo) in zip(cols_flags, CAMPOS_FLAG.items(), strict=True):
         with coluna:
             valor_inicial = valores_iniciais.get(nome_coluna, 0)
             entrada[nome_coluna] = st.selectbox(
-                rotulo, options=[0, 1],
+                rotulo,
+                options=[0, 1],
                 index=int(valor_inicial) if pd.notna(valor_inicial) else 0,
             )
 

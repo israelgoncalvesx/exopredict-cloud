@@ -1,8 +1,9 @@
-#BIBLIOTECAS
+# BIBLIOTECAS
 from pathlib import Path
+
 import pandas as pd
 
-#CAMINHOS
+# CAMINHOS
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 CSV_PATH = PROJECT_ROOT / "data" / "raw" / "kepler_koi.csv"
@@ -38,13 +39,7 @@ def parse_column_descriptions(csv_path: Path) -> dict[str, str]:
 def main() -> None:
     descriptions = parse_column_descriptions(CSV_PATH)
 
-    df = pd.read_csv(
-        CSV_PATH,
-        comment="#",
-        dtype={
-            "koi_quarters": "string"
-        }
-    )
+    df = pd.read_csv(CSV_PATH, comment="#", dtype={"koi_quarters": "string"})
 
     linhas = [
         "# Dicionário de dados — tabela `koi_raw`",
@@ -71,8 +66,7 @@ def main() -> None:
     OUTPUT_PATH.write_text("\n".join(linhas) + "\n", encoding="utf-8")
 
     documentadas = sum(
-        1 for coluna in df.columns
-        if coluna in descriptions or coluna in MANUAL_OVERRIDES
+        1 for coluna in df.columns if coluna in descriptions or coluna in MANUAL_OVERRIDES
     )
 
     print(f"Dicionário gerado em: {OUTPUT_PATH}")

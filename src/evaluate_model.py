@@ -26,9 +26,7 @@ def construir_modelo_final(colunas_numericas: list[str]) -> Pipeline:
             ("preprocessamento", construir_preprocessador(colunas_numericas)),
             (
                 "classificador",
-                HistGradientBoostingClassifier(
-                    class_weight="balanced", random_state=42
-                ),
+                HistGradientBoostingClassifier(class_weight="balanced", random_state=42),
             ),
         ]
     )
@@ -38,16 +36,26 @@ def plotar_matrizes_confusao(cm, cm_normalizada) -> None:
     fig, axes = plt.subplots(1, 2, figsize=(13, 5))
 
     sns.heatmap(
-        cm, annot=True, fmt="d", cmap="Blues",
-        xticklabels=ORDEM_CLASSES, yticklabels=ORDEM_CLASSES, ax=axes[0],
+        cm,
+        annot=True,
+        fmt="d",
+        cmap="Blues",
+        xticklabels=ORDEM_CLASSES,
+        yticklabels=ORDEM_CLASSES,
+        ax=axes[0],
     )
     axes[0].set_title("Matriz de confusão (contagem)")
     axes[0].set_xlabel("Previsto")
     axes[0].set_ylabel("Real")
 
     sns.heatmap(
-        cm_normalizada, annot=True, fmt=".2f", cmap="Blues",
-        xticklabels=ORDEM_CLASSES, yticklabels=ORDEM_CLASSES, ax=axes[1],
+        cm_normalizada,
+        annot=True,
+        fmt=".2f",
+        cmap="Blues",
+        xticklabels=ORDEM_CLASSES,
+        yticklabels=ORDEM_CLASSES,
+        ax=axes[1],
     )
     axes[1].set_title("Matriz de confusão (normalizada por classe real = recall)")
     axes[1].set_xlabel("Previsto")
@@ -79,8 +87,9 @@ def main() -> None:
     print("\nMatriz de confusão (normalizada por classe real):")
     print(pd.DataFrame(cm_normalizada, index=ORDEM_CLASSES, columns=ORDEM_CLASSES).round(3))
 
-    falso_positivo_para_confirmed = cm[ORDEM_CLASSES.index("FALSE POSITIVE"), ORDEM_CLASSES.index("CONFIRMED")]
-    confirmed_para_falso_positivo = cm[ORDEM_CLASSES.index("CONFIRMED"), ORDEM_CLASSES.index("FALSE POSITIVE")]
+    idx_fp, idx_confirmed = ORDEM_CLASSES.index("FALSE POSITIVE"), ORDEM_CLASSES.index("CONFIRMED")
+    falso_positivo_para_confirmed = cm[idx_fp, idx_confirmed]
+    confirmed_para_falso_positivo = cm[idx_confirmed, idx_fp]
     print(
         f"\nErros graves — FALSE POSITIVE previsto como CONFIRMED: "
         f"{falso_positivo_para_confirmed}; CONFIRMED previsto como FALSE POSITIVE: "

@@ -34,9 +34,7 @@ def construir_candidatos(colunas_numericas: list[str]) -> dict[str, Pipeline]:
                 ("preprocessamento", preprocessador),
                 (
                     "classificador",
-                    LogisticRegression(
-                        class_weight="balanced", max_iter=1000, random_state=42
-                    ),
+                    LogisticRegression(class_weight="balanced", max_iter=1000, random_state=42),
                 ),
             ]
         ),
@@ -59,9 +57,7 @@ def construir_candidatos(colunas_numericas: list[str]) -> dict[str, Pipeline]:
                 ("preprocessamento", preprocessador),
                 (
                     "classificador",
-                    HistGradientBoostingClassifier(
-                        class_weight="balanced", random_state=42
-                    ),
+                    HistGradientBoostingClassifier(class_weight="balanced", random_state=42),
                 ),
             ]
         ),

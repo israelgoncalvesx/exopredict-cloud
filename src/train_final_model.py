@@ -1,6 +1,6 @@
 import json
 import subprocess
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import joblib
@@ -26,9 +26,7 @@ def construir_modelo_final(colunas_numericas: list[str]) -> Pipeline:
             ("preprocessamento", construir_preprocessador(colunas_numericas)),
             (
                 "classificador",
-                HistGradientBoostingClassifier(
-                    class_weight="balanced", random_state=42
-                ),
+                HistGradientBoostingClassifier(class_weight="balanced", random_state=42),
             ),
         ]
     )
@@ -37,9 +35,7 @@ def construir_modelo_final(colunas_numericas: list[str]) -> Pipeline:
 def git_commit_atual() -> str:
     try:
         return (
-            subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=PROJECT_ROOT)
-            .decode()
-            .strip()
+            subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=PROJECT_ROOT).decode().strip()
         )
     except Exception:
         return "desconhecido"
@@ -75,7 +71,7 @@ def main() -> None:
         "versao": VERSAO,
         "algoritmo": "HistGradientBoostingClassifier",
         "hiperparametros": {"class_weight": "balanced", "random_state": 42},
-        "treinado_em": datetime.now(timezone.utc).isoformat(),
+        "treinado_em": datetime.now(UTC).isoformat(),
         "commit_git": git_commit_atual(),
         "linhas_treino": len(treino_completo),
         "linhas_teste": len(teste),
