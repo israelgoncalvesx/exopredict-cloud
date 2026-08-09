@@ -13,7 +13,7 @@ A base inicial do projeto usa o catálogo Kepler Objects of Interest (KOI). O CS
 - classes encontradas: `CONFIRMED`, `CANDIDATE` e `FALSE POSITIVE`;
 - consultas iniciais para conferir estrutura, amostras, distribuição das classes e média do `koi_score`.
 
-A análise exploratória completa está em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados, conclusões e o resumo executivo estão documentados em [`reports/eda.md`](reports/eda.md). A classificação das 141 colunas e a lista de features sem vazamento de alvo estão em [`reports/feature_selection.md`](reports/feature_selection.md). As decisões de limpeza e transformação (e por que imputação é adiada para depois do split) estão em [`reports/cleaning.md`](reports/cleaning.md). O split treino/validação/teste está documentado em [`reports/split.md`](reports/split.md).
+A análise exploratória completa está em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados, conclusões e o resumo executivo estão documentados em [`reports/eda.md`](reports/eda.md). A classificação das 141 colunas e a lista de features sem vazamento de alvo estão em [`reports/feature_selection.md`](reports/feature_selection.md). As decisões de limpeza e transformação (e por que imputação é adiada para depois do split) estão em [`reports/cleaning.md`](reports/cleaning.md). O split treino/validação/teste está documentado em [`reports/split.md`](reports/split.md). O modelo baseline (regressão logística, F1-macro 0,882 na validação) está documentado em [`reports/baseline_model.md`](reports/baseline_model.md).
 
 ## Estrutura planejada
 
@@ -81,6 +81,12 @@ Para gerar os splits de treino, validação e teste:
 python src/split.py
 ```
 
+Para treinar e avaliar o modelo baseline:
+
+```bash
+python src/baseline_model.py
+```
+
 ## Tasks
 
 ### Fundação e dados
@@ -103,7 +109,7 @@ python src/split.py
 
 ### Machine learning
 
-- [ ] Criar um modelo baseline
+- [x] Criar um modelo baseline
 - [ ] Treinar e comparar modelos candidatos
 - [ ] Tratar o desbalanceamento entre as classes
 - [ ] Avaliar métricas por classe e matriz de confusão

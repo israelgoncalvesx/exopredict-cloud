@@ -1,10 +1,11 @@
-"""Pipeline de transformação (imputação + log) para as features do ExoPredict.
+"""Pipeline de transformação (imputação + log + escala) para as features do ExoPredict.
 
 Define a receita, mas não a executa (`fit`) sobre o dataset inteiro: fazer
 isso antes do split treino/teste vazaria a distribuição do teste (ex.: a
-mediana usada na imputação) para dentro do treino. Quem consome este módulo
-deve chamar `fit` só com os dados de treino (ver `reports/eda.md` e
-`reports/feature_selection.md` para o raciocínio por trás das escolhas).
+mediana usada na imputação, a média/desvio usados na padronização) para
+dentro do treino. Quem consome este módulo deve chamar `fit` só com os
+dados de treino (ver `reports/eda.md` e `reports/feature_selection.md`
+para o raciocínio por trás das escolhas).
 """
 
 from pathlib import Path
@@ -13,7 +14,7 @@ import numpy as np
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import FunctionTransformer
+from sklearn.preprocessing import FunctionTransformer, StandardScaler
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -29,18 +30,29 @@ def _log1p_seguro(X: np.ndarray) -> np.ndarray:
 
 
 def construir_pipeline_log() -> Pipeline:
-    """Imputa pela mediana e aplica log1p nas colunas de cauda longa."""
+    """Imputa pela mediana, aplica log1p nas colunas de cauda longa e padroniza."""
     return Pipeline(
         steps=[
             ("imputar_mediana", SimpleImputer(strategy="median")),
             ("log1p", FunctionTransformer(_log1p_seguro, feature_names_out="one-to-one")),
+            ("padronizar", StandardScaler()),
         ]
     )
 
 
 def construir_pipeline_padrao() -> Pipeline:
-    """Imputa pela mediana, sem transformação de escala."""
-    return Pipeline(steps=[("imputar_mediana", SimpleImputer(strategy="median"))])
+    """Imputa pela mediana e padroniza (média 0, desvio 1).
+
+    Padronização é necessária para modelos sensíveis a escala (ex.: regressão
+    logística) — as features aqui vão de dias e Kelvin a magnitudes e raios
+    terrestres, em ordens de grandeza bem diferentes.
+    """
+    return Pipeline(
+        steps=[
+            ("imputar_mediana", SimpleImputer(strategy="median")),
+            ("padronizar", StandardScaler()),
+        ]
+    )
 
 
 def construir_preprocessador(colunas_numericas: list[str]) -> ColumnTransformer:
