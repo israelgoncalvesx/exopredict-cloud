@@ -13,7 +13,7 @@ A base inicial do projeto usa o catálogo Kepler Objects of Interest (KOI). O CS
 - classes encontradas: `CONFIRMED`, `CANDIDATE` e `FALSE POSITIVE`;
 - consultas iniciais para conferir estrutura, amostras, distribuição das classes e média do `koi_score`.
 
-A análise exploratória completa está em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados, conclusões e o resumo executivo estão documentados em [`reports/eda.md`](reports/eda.md). A classificação das 141 colunas e a lista de features sem vazamento de alvo estão em [`reports/feature_selection.md`](reports/feature_selection.md).
+A análise exploratória completa está em [`notebooks/01_eda.ipynb`](notebooks/01_eda.ipynb); os achados, conclusões e o resumo executivo estão documentados em [`reports/eda.md`](reports/eda.md). A classificação das 141 colunas e a lista de features sem vazamento de alvo estão em [`reports/feature_selection.md`](reports/feature_selection.md). As decisões de limpeza e transformação (e por que imputação é adiada para depois do split) estão em [`reports/cleaning.md`](reports/cleaning.md).
 
 ## Estrutura planejada
 
@@ -69,6 +69,12 @@ Para classificar as colunas e gerar a lista de variáveis utilizáveis sem vazam
 python src/define_feature_columns.py
 ```
 
+Para limpar os dados e gerar `data/processed/koi_clean.csv`:
+
+```bash
+python src/cleaning.py
+```
+
 ## Tasks
 
 ### Fundação e dados
@@ -86,7 +92,7 @@ python src/define_feature_columns.py
 - [x] Realizar análise exploratória completa
 - [x] Investigar valores ausentes, duplicados e outliers
 - [x] Definir as variáveis que poderão ser usadas sem vazamento de alvo
-- [ ] Construir o pipeline de limpeza e transformação
+- [x] Construir o pipeline de limpeza e transformação
 - [ ] Separar dados de treino, validação e teste
 
 ### Machine learning

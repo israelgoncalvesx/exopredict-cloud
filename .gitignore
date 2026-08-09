@@ -24,6 +24,9 @@ Thumbs.db
 # Banco de dados local (gerado por src/load_to_database.py)
 database/*.db
 
+# Dados processados (gerados por src/cleaning.py, reproduzíveis a partir de data/raw/)
+data/processed/*.csv
+
 # Logs e temporários
 *.log
 *.tmp

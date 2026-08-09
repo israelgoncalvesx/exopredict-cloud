@@ -36,7 +36,11 @@ python src/generate_data_dictionary.py
 ```text
 data/
 ├── raw/          # dados originais, nunca editados manualmente
-├── processed/    # dados tratados/transformados pelo pipeline (a criar)
+├── processed/    # dados tratados pelo pipeline (koi_clean.csv, gerado por src/cleaning.py)
 ├── README.md     # este arquivo
 └── DICTIONARY.md # dicionário de dados (gerado)
 ```
+
+### `processed/koi_clean.csv`
+
+Gerado por `src/cleaning.py`: identificador + alvo + as 103 features sem vazamento de `reports/feature_selection.md`, com as correções de qualidade documentadas em `reports/cleaning.md` (`koi_depth == 0` e `koi_prad` fisicamente implausível). Nulos remanescentes não são imputados aqui de propósito — ver `reports/cleaning.md` para o motivo.
