@@ -44,6 +44,77 @@ CAMPOS_FLAG = {
     "koi_fpflag_ec": "Flag: contaminação por efeméride",
 }
 
+# Medianas por classe, de reports/eda.md (bloco 7) — referência para a
+# explicação em linguagem simples abaixo. Não é um SHAP ao vivo (pesaria
+# demais na API enxuta, ver reports/api.md); é uma leitura heurística
+# fundamentada nos mesmos achados documentados em reports/explainability.md.
+MEDIANA_KOI_PRAD_FALSE_POSITIVE = 8.97
+MEDIANA_KOI_PRAD_CONFIRMED_CANDIDATE = 2.0
+
+
+def gerar_explicacao(entrada: dict, classe_prevista: str) -> list[str]:
+    """Poucas frases contextualizando a previsão, com base nas features de
+    maior peso real identificadas em reports/explainability.md.
+
+    Cuidado deliberado: a fronteira CONFIRMED/CANDIDATE é a mais difícil do
+    modelo (~85% dos erros, reports/evaluation.md) porque as duas classes têm
+    perfil físico parecido. Por isso, para essas duas classes o texto descreve
+    os valores observados sem soar mais confiante do que o modelo realmente
+    é — evita frases que pareçam contradizer a própria previsão quando o
+    modelo erra exatamente nessa fronteira.
+    """
+    pontos = []
+
+    flags_ativas = [rotulo for nome, rotulo in CAMPOS_FLAG.items() if entrada.get(nome) == 1]
+    if flags_ativas:
+        pontos.append(
+            f"🚩 {len(flags_ativas)} flag(s) automática(s) ativada(s) ({', '.join(flags_ativas)}) "
+            "— é o sinal mais forte que o modelo usa para identificar FALSE POSITIVE "
+            "(reports/explainability.md)."
+        )
+
+    raio = entrada.get("koi_prad")
+    if raio is not None and raio > MEDIANA_KOI_PRAD_FALSE_POSITIVE * 0.7:
+        pontos.append(
+            f"🪐 Raio do planeta estimado em {raio:.2f} raios terrestres — próximo da mediana "
+            f"típica de FALSE POSITIVE (~{MEDIANA_KOI_PRAD_FALSE_POSITIVE:.1f} R⊕), bem acima da "
+            f"mediana de CONFIRMED/CANDIDATE (~{MEDIANA_KOI_PRAD_CONFIRMED_CANDIDATE:.1f} R⊕) "
+            "— reports/eda.md, bloco 7."
+        )
+
+    if classe_prevista == "FALSE POSITIVE" and not pontos:
+        pontos.append(
+            "Nenhuma flag automática ativada e raio dentro do esperado — outras variáveis "
+            "físicas do trânsito pesaram para FALSE POSITIVE."
+        )
+
+    snr = entrada.get("koi_model_snr")
+    evento_multiplo = entrada.get("koi_max_mult_ev")
+    fronteira_dificil = classe_prevista in ("CONFIRMED", "CANDIDATE")
+    if fronteira_dificil and snr is not None and evento_multiplo is not None:
+        pontos.append(
+            f"📶 Sinal-ruído ({snr:.1f}) e estatística de evento múltiplo ({evento_multiplo:.1f}) "
+            "são as variáveis que mais pesam nessa fronteira específica "
+            "(reports/explainability.md), mas CONFIRMED e CANDIDATE têm perfil físico "
+            "parecido — é onde o modelo mais erra (reports/evaluation.md)."
+        )
+
+    n_planetas = entrada.get("koi_count")
+    if fronteira_dificil and n_planetas is not None and n_planetas > 1:
+        pontos.append(
+            f"🌌 O sistema já tem {int(n_planetas)} planeta(s) conhecido(s) — sistemas "
+            "multi-planetários costumam ter seus candidatos confirmados com mais frequência, "
+            "um dos fatores que o modelo considera nessa fronteira."
+        )
+
+    if not pontos:
+        pontos.append(
+            "Não há um fator isolado dominante nos campos preenchidos — a previsão combina "
+            "várias variáveis com peso menor cada uma."
+        )
+
+    return pontos
+
 
 @st.cache_data
 def carregar_amostras() -> pd.DataFrame:
@@ -136,6 +207,14 @@ def main() -> None:
 
         probs = pd.Series(resultado["probabilidades"], name="probabilidade").sort_values()
         st.bar_chart(probs)
+
+        st.markdown("**Por que essa previsão?**")
+        for ponto in gerar_explicacao(entrada, resultado["classe_prevista"]):
+            st.markdown(f"- {ponto}")
+        st.caption(
+            "Leitura simplificada, baseada nos achados de reports/explainability.md "
+            "e reports/eda.md do repositório — não é uma explicação SHAP em tempo real."
+        )
 
 
 if __name__ == "__main__":
