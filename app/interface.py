@@ -108,10 +108,7 @@ def main() -> None:
         st.session_state.nome_exemplo = exemplo["kepoi_name"]
 
     if "nome_exemplo" in st.session_state:
-        st.info(
-            f"Exemplo carregado: **{st.session_state.nome_exemplo}** "
-            f"(classe real: **{st.session_state.classe_real}**)"
-        )
+        st.info(f"Exemplo carregado: **{st.session_state.nome_exemplo}**")
 
     entrada = montar_formulario(st.session_state.valores_iniciais)
 
@@ -129,6 +126,13 @@ def main() -> None:
 
         resultado = resposta.json()
         st.success(f"Classe prevista: **{resultado['classe_prevista']}**")
+
+        if "classe_real" in st.session_state:
+            classe_real = st.session_state.classe_real
+            if classe_real == resultado["classe_prevista"]:
+                st.caption(f"✅ Classe real do exemplo: **{classe_real}** — o modelo acertou.")
+            else:
+                st.caption(f"❌ Classe real do exemplo: **{classe_real}** — o modelo errou.")
 
         probs = pd.Series(resultado["probabilidades"], name="probabilidade").sort_values()
         st.bar_chart(probs)
